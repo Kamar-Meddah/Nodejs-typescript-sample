@@ -21,4 +21,12 @@ module.exports = class usersTable extends table{
 
     }
 
+    findExist (email,cb = null) {
+
+        this[this.tab].find({where: {"email": email}}).then((res)=>{
+            cb(res);
+        })
+
+    }
+
 }

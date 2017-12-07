@@ -30,7 +30,7 @@ module.exports = class table { //Begin Class
 
         //users table
         this.users = this.db.define('users', {
-            username: { type: Sequelize.STRING, unique: 'compositeIndex', allowNull: false},
+            username: { type: Sequelize.STRING, allowNull: false},
             password: { type: Sequelize.STRING, allowNull: false },
             admin : {type: Sequelize.BOOLEAN},
             email : {type: Sequelize.STRING, unique: 'compositeIndex', allowNull: false}
