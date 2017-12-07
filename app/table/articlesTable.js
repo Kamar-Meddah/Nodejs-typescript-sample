@@ -8,7 +8,7 @@ module.exports = class articlesTable extends table {
     }
 
     countByCategorie(id, cb) {
-        this[this.tab].count({ where: { 'categoryId': id } }).then((res) => {
+        this[this.tab].count({ where: { 'categoryId': {$eq :id} } }).then((res) => {
             cb(res)
         })
     }
@@ -19,7 +19,7 @@ module.exports = class articlesTable extends table {
             include: [this.categories],
             offset: arg[0],
             limit: arg[1],
-            where: { "categoryId": id },
+            where: { "categoryId": {$eq: id} },
             order: [
                 ['date', 'DESC']
             ],
@@ -99,7 +99,7 @@ module.exports = class articlesTable extends table {
     find(id, cb) {
         this[this.tab].find({
             include: [this.categories],
-            where: { "id": id }
+            where: { "id": {$eq: id} }
         }).then((res) => {
             cb(res)
         })

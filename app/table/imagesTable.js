@@ -9,13 +9,13 @@ module.exports = class imagesTable extends table{
 
    
    findImg(id,cb){
-       this[this.tab].findAll({where:{"articleId":id}}).then((res)=>{
+       this[this.tab].findAll({where:{"articleId": {$eq: id}}}).then((res)=>{
            cb(res)
        })
     }
 
     deleteWithArticle(id,cb=null){
-        this[this.tab].destroy({where:{"articleId":id}}).then(res=>{
+        this[this.tab].destroy({where:{"articleId": {$eq: id}}}).then(res=>{
             if(cb !== null){
                 cb();
             }

@@ -8,13 +8,13 @@ module.exports = class table { //Begin Class
 
         //categories table
         this.categories = this.db.define('categories', {
-            titre: { type: Sequelize.STRING }
+            titre: { type: Sequelize.STRING , allowNull: false}
         });
         this.categories.sync();
 
         //articles table
         this.articles = this.db.define('articles', {
-            titre: { type: Sequelize.STRING },
+            titre: { type: Sequelize.STRING , allowNull: false},
             contenu: { type: Sequelize.TEXT },
             date: { type: Sequelize.DATE, defaultValue: this.db.fn('NOW') },
             categoryId: {
@@ -22,43 +22,47 @@ module.exports = class table { //Begin Class
                 references: {
                     model: this.categories,
                     key: 'id',
-                }
+                }, 
+                allowNull: false
             }
         });
         this.articles.sync();
 
         //users table
         this.users = this.db.define('users', {
-            username: { type: Sequelize.STRING },
-            password: { type: Sequelize.STRING },
-            admin :{type: Sequelize.BOOLEAN}
+            username: { type: Sequelize.STRING, unique: 'compositeIndex', allowNull: false},
+            password: { type: Sequelize.STRING, allowNull: false },
+            admin : {type: Sequelize.BOOLEAN},
+            email : {type: Sequelize.STRING, unique: 'compositeIndex', allowNull: false}
         })
         this.users.sync();
 
         //images table
         this.images = this.db.define('images', {
-            name: { type: Sequelize.STRING },
+            name: { type: Sequelize.STRING , allowNull: false},
             articleId: {
                 type: Sequelize.INTEGER,
                 references: {
                     model: this.articles,
                     key: 'id',
-                }
+                }, 
+                allowNull: false
             }
         })
         this.images.sync();
 
         //comments table
         this.comments = this.db.define('comments', {
-            name: { type: Sequelize.STRING },
-            content: { type: Sequelize.TEXT },
+            name: { type: Sequelize.STRING , allowNull: false},
+            content: { type: Sequelize.TEXT , allowNull: false},
             date: { type: Sequelize.DATE, defaultValue: this.db.fn('NOW') },
             articleId: {
                 type: Sequelize.INTEGER,
                 references: {
                     model: this.articles,
                     key: 'id',
-                }
+                }, 
+                allowNull: false
             }
         })
         this.comments.sync();
@@ -92,7 +96,7 @@ module.exports = class table { //Begin Class
     }
 
     find(id, cb) {
-        this[this.tab].find({ where: { 'id': id } }).then((res) => {
+        this[this.tab].find({ where: { 'id': {$eq: id} } }).then((res) => {
             cb(res)
         })
     }
@@ -112,13 +116,13 @@ module.exports = class table { //Begin Class
     }
 
     update(id, obj, cb = null) {
-        this[this.tab].update(obj, { where: { 'id': id } }).then((res) => {
+        this[this.tab].update(obj, { where: { 'id': {$eq: id} } }).then((res) => {
             if (cb !== null) { cb() }
         })
     }
 
     delete(id) {
-        this[this.tab].destroy({ where: { 'id': id } })
+        this[this.tab].destroy({ where: { 'id':{$eq: id} } })
     }
 
 } //End Class

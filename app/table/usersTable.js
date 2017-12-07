@@ -8,14 +8,15 @@ module.exports = class usersTable extends table{
     }
 
     findPass(id,pass,cb){
-        this[this.tab].find({where:{"id":id,"password":pass}}).then((res)=>{
+        this[this.tab].find({where:{"id":{$eq: id},"password":{$eq: pass}}}).then((res)=>{
             cb(res)
         })
     }
 
     login(user=[],cb){
-        this[this.tab].find({where:{"username":user[0],"password":user[1]}}).then((res)=>{
-            cb(res)
+
+        this[this.tab].find({where:{"email":{$eq: user[0]},"password":{$eq: user[1]}}}).then((res)=>{
+            cb(res);
         })
 
     }

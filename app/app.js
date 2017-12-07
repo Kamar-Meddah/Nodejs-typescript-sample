@@ -9,11 +9,12 @@ class app{//Begin Class
 
      getDb(){
          
-        if(this.DB=== undefined){
+        if(this.DB === undefined){
             const dbConnect=require('../core/database/SqlDB');
             this.DB=new dbConnect(require('../config/dbconfig'));
+            this.DB = this.DB.getDbConnect();
         }
-        return this.DB.getDbConnect();
+        return this.DB;
     }
 
     getTable(name){
@@ -32,4 +33,4 @@ class app{//Begin Class
    }
 
 }//END Class
-module.exports=app.getInstance();
+module.exports = app.getInstance();

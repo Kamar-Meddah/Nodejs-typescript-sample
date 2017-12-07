@@ -10,10 +10,10 @@ module.exports = class UsersCtrl {
             const sha1 = require('sha1')
            // console.log(this.jwt)
             
-            this.users.login([request.body.username, sha1(request.body.password)], (row) => {
+            this.users.login([request.body.email, sha1(request.body.password)],(row) => {
                 if (row !== null) {
                     console.log(row.admin)
-                    let res = this.jwt.sign({'id': row.id,'admin': row.admin,'user':request.body.username,exp: Date.now()+60*60*60*24 },'finalFlash')
+                    let res = this.jwt.sign({'id': row.id,'admin': row.admin,'email':request.body.email,exp: Date.now()+60*60*60*24 },'finalFlash')
                     response.json({token: res,id: row.id, 'bool':true,'admin': row.admin});
                 } else {
                     response.json({ 'bool': false });
