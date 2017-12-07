@@ -1,6 +1,6 @@
 const table = require('../../core/table/table');
 
-class articlesTable extends table {
+module.exports = class articlesTable extends table {
 
     constructor() {
         super();
@@ -106,5 +106,3 @@ class articlesTable extends table {
     }
 
 }
-
-module.exports = new articlesTable();
