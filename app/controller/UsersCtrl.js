@@ -6,24 +6,34 @@ module.exports = class UsersCtrl {
 
     }
 
+    tokenCheck (request, response) {
+        try{
+            this.jwt.verify(request.body.token,'finalFlash')
+            response.json({'bool': true})
+        } 
+        catch (e) {
+             response.json({'bool': false})
+        }    
+    }
+
     login(request, response) {
             const sha1 = require('sha1')
            // console.log(this.jwt)
             
             this.users.login([request.body.email, sha1(request.body.password)],(row) => {
                 if (row !== null) {
-                    console.log(row.admin)
+
                     let res = this.jwt.sign({
-                        'id': row.id,
+                        'sub': row.id,
                         'admin': row.admin,
                         'email':row.email,
                         'username': row.username,
-                        exp: Date.now()+1000*60*60*24
+                        'exp': Math.floor(Date.now() / 1000)+(60*60*24)
                     },
                     'finalFlash'
                 );
                 
-                response.json({'bool':true, token: res,id: row.id, 'admin': row.admin, 'username': row.username});
+                response.json({'bool':true, 'token': res, 'admin': row.admin});
                 
             } else {
                     response.json({ 'bool': false });
@@ -70,6 +80,12 @@ module.exports = class UsersCtrl {
         const sha1 = require('sha1')
         this.users.update(request.body.id, { 'password': sha1(request.body.password) })
         response.json({});
+    }
+
+    getUserParams (request, response) {
+
+        response.json(this.jwt.decode(request.body.token));
+    
     }
 
 }

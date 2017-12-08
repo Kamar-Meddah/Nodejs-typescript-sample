@@ -42,6 +42,7 @@ app.use(express.static(__dirname + '/'));
 
 // Post Requests
 app.post('/', upload.array('images'), (req, res) => {
+
     const string = req.body.request.split('.')
     let ctrl = require(`./app/controller/${string[0]}Ctrl`);
     ctrl = new ctrl()
