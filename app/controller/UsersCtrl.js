@@ -18,8 +18,6 @@ module.exports = class UsersCtrl {
 
     login(request, response) {
             const sha1 = require('sha1')
-           // console.log(this.jwt)
-            
             this.users.login([request.body.email, sha1(request.body.password)],(row) => {
                 if (row !== null) {
 
@@ -58,8 +56,6 @@ module.exports = class UsersCtrl {
                     response.json({"created":false})
                 }
             });
-            
-
                 
         } //END register
 
@@ -80,12 +76,6 @@ module.exports = class UsersCtrl {
         const sha1 = require('sha1')
         this.users.update(request.body.id, { 'password': sha1(request.body.password) })
         response.json({});
-    }
-
-    getUserParams (request, response) {
-
-        response.json(this.jwt.decode(request.body.token));
-    
     }
 
 }
