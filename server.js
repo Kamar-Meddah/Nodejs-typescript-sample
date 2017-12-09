@@ -15,6 +15,7 @@ const Sequelize = require('sequelize');
 const DBConfig = require('./config/dbconfig');
 const sequelize = new Sequelize(DBConfig.uri,DBConfig.options);
 
+
 // Define Session table
 sequelize.define('sessions', {
     session_id: { type: Sequelize.STRING, primaryKey: true },
@@ -49,6 +50,15 @@ app.post('/', upload.array('images'), (req, res) => {
     const fun = string[1]
     ctrl[fun](req, res)
 })
+
+app.get('/', (req, res) => {
+    console.log('get req')
+        const string = req.query.request.split('.')
+        let ctrl = require(`./app/controller/${string[0]}Ctrl`);
+        ctrl = new ctrl()
+        const fun = string[1]
+        ctrl[fun](req, res)
+    })
 
 //-------------------------------------------------------------------------
 //server port default=80*/

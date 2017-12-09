@@ -7,7 +7,7 @@ module.exports = class ArticlesCtrl {
     index(request, response) {
         this.articles.count((nbr) => {
             let parpage = 6;
-            let page = request.body.page;
+            let page = request.query.page;
             let total = nbr;
             let nbpage = Math.ceil(total / parpage);
             let arg1 = page * parpage - parpage;
@@ -22,22 +22,22 @@ module.exports = class ArticlesCtrl {
 
 
     show(request, response) {
-        this.articles.find(request.body.id, (row) => {
+        this.articles.find(request.query.id, (row) => {
             response.json(row)
         });
     }
 
 
     search(request, response) {
-            this.articles.countSearch(request.body.search, (nbr) => {
+            this.articles.countSearch(request.query.search, (nbr) => {
                 let parpage = 6;
-                let page = request.body.page;
+                let page = request.query.page;
                 let total = nbr;
                 let nbpage = Math.ceil(total / parpage);
                 let arg1 = page * parpage - parpage;
                 let arg2 = parpage;
                 //----------------------------
-                this.articles.search(request.body.search, [arg1, arg2], (rows) => {
+                this.articles.search(request.query.search, [arg1, arg2], (rows) => {
                     let array = { 'art': rows, 'nbpage': nbpage };
                     response.json(array);
                 });
@@ -45,15 +45,15 @@ module.exports = class ArticlesCtrl {
         } //END search
 
     byCategorie(request, response) {
-        this.articles.countByCategorie(request.body.category_id, (nbr) => {
+        this.articles.countByCategorie(request.query.category_id, (nbr) => {
             let parpage = 6;
-            let page = request.body.page;
+            let page = request.query.page;
             let total = nbr;
             let nbpage = Math.ceil(total / parpage);
             let arg1 = page * parpage - parpage;
             let arg2 = parpage;
             //----------------------------
-            this.articles.lastByCategorie(request.body.category_id, [arg1, arg2], (rows) => {
+            this.articles.lastByCategorie(request.query.category_id, [arg1, arg2], (rows) => {
                 let array = { 'art': rows, 'nbpage': nbpage };
                 response.json(array);
             });

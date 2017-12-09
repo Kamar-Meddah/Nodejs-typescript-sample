@@ -39,7 +39,7 @@ module.exports = class table { //Begin Class
 
         //images table
         this.images = this.db.define('images', {
-            name: { type: Sequelize.STRING , allowNull: false},
+            name: { type: Sequelize.STRING , allowNull: true},
             articleId: {
                 type: Sequelize.INTEGER,
                 references: {

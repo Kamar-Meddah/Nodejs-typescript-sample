@@ -4,7 +4,7 @@ module.exports = class ImagesCtrl {
     }
 
     find(request, response) {
-        this.images.findImg(request.body.id, (row) => {
+        this.images.findImg(request.query.id, (row) => {
             response.json(row);
         })
 

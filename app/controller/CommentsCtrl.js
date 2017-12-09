@@ -4,7 +4,7 @@ module.exports = class CommentsCtrl {
     }
 
     find(request, response) {
-        this.comments.find(request.body.id, (row) => {
+        this.comments.find(request.query.id, (row) => {
             response.json(row)
         });
     }

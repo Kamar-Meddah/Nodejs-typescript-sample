@@ -13,7 +13,7 @@ module.exports = class CategoriesCtrl {
     index(request, response) {
         this.categories.count((nbr) => {
             let parpage = 6;
-            let page = request.body.page;
+            let page = request.query.page;
             let total = nbr;
             let nbpage = Math.ceil(total / parpage);
             let arg1 = page * parpage - parpage;
