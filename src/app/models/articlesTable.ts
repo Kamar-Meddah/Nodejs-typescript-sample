@@ -1,25 +1,26 @@
-const table = require('../../core/table/table');
+import {Sequelize} from "sequelize";
+import AppTable from "./appTable";
 
-module.exports = class articlesTable extends table {
+export default class ArticlesTable extends AppTable {
 
-    constructor() {
-        super();
+    constructor(db: Sequelize) {
+        super(db);
         this.tab = 'articles';
     }
 
-    countByCategorie(id, cb) {
-        this[this.tab].count({ where: { 'categoryId': {$eq :id} } }).then((res) => {
+    public countByCategorie(id: number, cb: (res: any) => void): void {
+        this.articles.count({where: {'categoryId': {$eq: id}}}).then((res: any) => {
             cb(res)
         })
     }
 
-    lastByCategorie(id, arg = [], cb) {
+    public lastByCategorie(id: number, arg: Array<number>, cb: (res: any) => void): void {
 
-        this[this.tab].findAll({
+        this.articles.findAll({
             include: [this.categories],
             offset: arg[0],
             limit: arg[1],
-            where: { "categoryId": {$eq: id} },
+            where: {"categoryId": {$eq: id}},
             order: [
                 ['date', 'DESC']
             ],
@@ -27,13 +28,13 @@ module.exports = class articlesTable extends table {
                 [this.db.fn('SUBSTRING', this.db.col('contenu'), 1, 200), 'contenu'],
                 'id', 'date', 'titre', 'categoryId'
             ]
-        }).then((res) => {
+        }).then((res: any) => {
             cb(res)
         })
     }
 
-    last(arg = [], cb) {
-        this[this.tab].findAll({
+    public last(arg: Array<number>, cb: (res: any) => void): void {
+        this.articles.findAll({
             include: [this.categories],
             offset: arg[0],
             limit: arg[1],
@@ -44,36 +45,34 @@ module.exports = class articlesTable extends table {
                 [this.db.fn('SUBSTRING', this.db.col('contenu'), 1, 200), 'contenu'],
                 'id', 'date', 'titre', 'categoryId'
             ]
-        }).then((res) => {
+        }).then((res: any) => {
             cb(res)
         })
 
     }
 
-    all(arg = [], cb) {
-        this[this.tab].findAll({
+    public all(cb: (res: any) => void, arg: Array<number>): void {
+        this.articles.findAll({
             offset: arg[0],
             order: [
                 ['date', 'DESC']
             ],
             attributes: ['id', 'date', 'titre', 'categoryId']
-        }).then((res) => {
-
+        }).then((res: any) => {
             cb(res)
         })
 
     }
 
-    search(index, arg = [], cb) {
-        let z = [];
-        let a = index.split(' ');
-        z = a.join('%');
+    public search(index: string, arg: Array<number>, cb: (res: any) => void): void {
+        const a: Array<string> = index.split(' ');
+        const z: string = a.join('%');
 
-        this[this.tab].findAll({
+        this.articles.findAll({
             include: [this.categories],
             offset: arg[0],
             limit: arg[1],
-            where: { "titre": { $like: '%' + z + '%' } },
+            where: {"titre": {$like: '%' + z + '%'}},
             order: [
                 ['date', 'DESC']
             ],
@@ -81,26 +80,25 @@ module.exports = class articlesTable extends table {
                 [this.db.fn('SUBSTRING', this.db.col('contenu'), 1, 200), 'contenu'],
                 'id', 'date', 'titre', 'categoryId'
             ]
-        }).then((res) => {
+        }).then((res: any) => {
             cb(res)
         })
     }
 
-    countSearch(index, cb) {
-        let z = [];
-        let a = index.split(' ');
-        z = a.join('%');
+    public countSearch(index: string, cb: (res: any) => void): void {
+        let a: Array<string> = index.split(' ');
+        const z: string = a.join('%');
 
-        this[this.tab].count({ where: { "titre": { $like: '%' + z + '%' } } }).then((res) => {
+        this.articles.count({where: {"titre": {$like: '%' + z + '%'}}}).then((res: any) => {
             cb(res)
         })
     }
 
-    find(id, cb) {
-        this[this.tab].find({
+    public find(id: number, cb: (res: any) => void): void {
+        this.articles.find({
             include: [this.categories],
-            where: { "id": {$eq: id} }
-        }).then((res) => {
+            where: {"id": {$eq: id}}
+        }).then((res: any) => {
             cb(res)
         })
     }
