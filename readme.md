@@ -5,5 +5,5 @@ Run `npm start` for a backend server (express).
 
 ## Note
 this is the server side of the blog web application 
-if you're looking for the client side here it is https://github.com/Kamar-Meddah/blog-frontend
+if you're looking for the client side here it is https://github.com/Kamar-Meddah/Angular-sample/
 
